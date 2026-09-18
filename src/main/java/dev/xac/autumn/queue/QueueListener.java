@@ -18,8 +18,14 @@ public class QueueListener implements Listener {
 	public void onPlayerQuitEvent(PlayerQuitEvent event) {
 		Profile profile = Profile.getProfiles().get(event.getPlayer().getUniqueId());
 
-		if (profile.getState() == ProfileState.QUEUEING) {
+		if (profile != null && profile.getQueueProfile() != null) {
 			profile.getQueueProfile().getQueue().removePlayer(profile.getQueueProfile());
+			return;
+		}
+
+		for (Queue queue : Queue.getQueues()) {
+			queue.getPlayers().removeIf(queueProfile ->
+					queueProfile.getPlayerUuid().equals(event.getPlayer().getUniqueId()));
 		}
 	}
 

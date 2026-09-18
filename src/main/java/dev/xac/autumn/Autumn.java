@@ -2,6 +2,7 @@ package dev.xac.autumn;
 
 import com.bizarrealex.aether.Aether;
 import com.bizarrealex.aether.AetherOptions;
+import dev.xac.autumn.adapter.CoreManager;
 import dev.xac.autumn.arena.Arena;
 import dev.xac.autumn.arena.ArenaListener;
 import dev.xac.autumn.arena.ArenaType;
@@ -114,6 +115,9 @@ public class Autumn extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		autumn = this;
+		if (CoreManager.getInstance() == null) {
+			new CoreManager();
+		}
 		getServer().getPluginManager().registerEvents(new MenuListener(), this);
 		honcho = new Honcho(this);
 		mainConfig = new BasicConfigurationFile(this, "config");
@@ -206,7 +210,6 @@ public class Autumn extends JavaPlugin {
 				new KitEditorListener(),
 				new PartyListener(),
 				new ProfileListener(),
-				new PartyListener(),
 				new MatchListener(),
 				new QueueListener(),
 				new ArenaListener(),

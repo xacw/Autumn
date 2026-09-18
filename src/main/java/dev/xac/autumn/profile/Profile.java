@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.Setter;
 import dev.xac.autumn.Autumn;
@@ -37,7 +38,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Profile {
 
-	@Getter private static Map<UUID, Profile> profiles = new HashMap<>();
+	@Getter private static Map<UUID, Profile> profiles = new ConcurrentHashMap<>();
 	private static MongoCollection<Document> collection;
 
 	@Getter private UUID uuid;

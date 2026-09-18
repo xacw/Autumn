@@ -92,6 +92,10 @@ public class BasicTeamMatch extends Match {
 
 	@Override
 	public boolean canEndMatch() {
+		if (hasForfeited(participantA) || hasForfeited(participantB)) {
+			return true;
+		}
+
 		if (kit.getGameRules().isSumo()) {
 			if (ranked) {
 				return participantA.getRoundWins() == 3 || participantB.getRoundWins() == 3;
@@ -101,6 +105,16 @@ public class BasicTeamMatch extends Match {
 		} else {
 			return participantA.isAllDead() || participantB.isAllDead();
 		}
+	}
+
+	private boolean hasForfeited(GameParticipant<MatchGamePlayer> participant) {
+		for (MatchGamePlayer gamePlayer : participant.getPlayers()) {
+			if (!gamePlayer.isDisconnected()) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Override

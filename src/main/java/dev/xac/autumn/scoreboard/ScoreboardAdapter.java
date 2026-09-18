@@ -66,9 +66,9 @@ public class ScoreboardAdapter implements BoardAdapter {
 		List<String> lines = new ArrayList<>();
 
 		if (profile.getState() == ProfileState.LOBBY || profile.getState() == ProfileState.QUEUEING) {
-			lines.add("&cOnline: &7" + Bukkit.getOnlinePlayers().size());
-			lines.add("&cIn Fights: &7" + inFights);
-			lines.add("&cIn Queues: &7" + inQueues);
+			lines.add("&bOnline: &7" + Bukkit.getOnlinePlayers().size());
+			lines.add("&bIn Fights: &7" + inFights);
+			lines.add("&bIn Queues: &7" + inQueues);
 
 			if (EventGame.getActiveGame() == null && !EventGame.getCooldown().hasExpired()) {
 				lines.add("&cEvent Cooldown: &7" + TimeUtil.millisToTimer(EventGame.getCooldown().getRemaining()));
@@ -77,7 +77,7 @@ public class ScoreboardAdapter implements BoardAdapter {
 
 		if (profile.getState() == ProfileState.LOBBY) {
 			if (profile.getParty() != null) {
-				lines.add("&cYour Party");
+				lines.add("&bYour Party");
 
 				int added = 0;
 				Party party = profile.getParty();
@@ -99,11 +99,11 @@ public class ScoreboardAdapter implements BoardAdapter {
 			lines.add(CC.SB_BAR);
 			lines.add("&a&oSearching for a match...");
 			lines.add(" ");
-			lines.add("&c" + queueProfile.getQueue().getQueueName());
-			lines.add("&cElapsed: &7" + TimeUtil.millisToTimer(queueProfile.getPassed()));
+			lines.add("&b" + queueProfile.getQueue().getQueueName());
+			lines.add("&bElapsed: &7" + TimeUtil.millisToTimer(queueProfile.getPassed()));
 
 			if (queueProfile.getQueue().isRanked()) {
-				lines.add("&cELO Range: &7" + queueProfile.getMinRange() + " -> " + queueProfile.getMaxRange());
+				lines.add("&bELO Range: &7" + queueProfile.getMinRange() + " -> " + queueProfile.getMaxRange());
 			}
 		} else if (profile.getState() == ProfileState.FIGHTING || profile.getState() == ProfileState.SPECTATING) {
 			lines.addAll(profile.getMatch().getScoreboardLines(player));

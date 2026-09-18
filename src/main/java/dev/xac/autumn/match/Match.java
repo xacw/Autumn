@@ -272,6 +272,11 @@ public abstract class Match {
 	public abstract boolean canEndRound();
 
 	public void onDisconnect(Player dead) {
+		// Spectators only need to be detached from the active match.
+		if (spectators.remove(dead.getUniqueId())) {
+			return;
+		}
+
 		// Don't continue if the match is already ending
 		if (!(state == MatchState.STARTING_ROUND || state == MatchState.PLAYING_ROUND)) {
 			return;

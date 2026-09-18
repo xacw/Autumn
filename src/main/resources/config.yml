@@ -1,16 +1,16 @@
 MONGO:
   HOST: "127.0.0.1"
   PORT: 27017
-  DATABASE: "praxi"
+  DATABASE: "practice"
   AUTHENTICATION:
     ENABLED: false
     USERNAME: ""
     PASSWORD: ""
-    ADMIN: "praxi-admin"
+    ADMIN: "admin"
 SCOREBOARD:
-  TITLE: "&4&lZonix Practice"
+  TITLE: "&9&lPractice"
 JOIN_MESSAGES:
-  - " &7&l* &c&lWelcome to Zonix Practice Season 1!"
+  - " &7&l* &c&lWelcome to Practice Season 1!"
   - " &7&l* &c&lPlease report any issues to an administrator!"
 KIT_EDITOR:
   START_RENAMING: "&eNow renaming &a{0}&e... Enter the new name now. &7&o(Chat colors work)"

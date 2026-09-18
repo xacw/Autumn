@@ -51,11 +51,11 @@
             <systemPath>${project.basedir}/libs/WorldEdit.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>org.github.paperspigot</groupId>
-            <artifactId>paperspigot-api</artifactId>
+            <groupId>org.github.pa1perspigot</groupId>
+            <artifactId>paperspigot-a1pi</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/PaperSpigot-1.8.8-R0.1-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/libs/kewlspigot-server-1.8.8-R0.1-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.boydti</groupId>
@@ -72,7 +72,11 @@
             <systemPath>${project.basedir}/libs/ProtocolLib.jar</systemPath>
         </dependency>
     </dependencies>
-
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+    </properties>
     <build>
         <defaultGoal>clean install</defaultGoal>
 

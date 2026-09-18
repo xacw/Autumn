@@ -34,7 +34,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -46,6 +45,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.potion.PotionSplashEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -491,14 +491,22 @@ public class MatchListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerQuitEvent(PlayerQuitEvent event) {
-		Profile profile = Profile.getProfiles().get(event.getPlayer().getUniqueId());
+		Player player = event.getPlayer();
+		Profile profile = Profile.getProfiles().get(player.getUniqueId());
+		Match match = profile == null ? null : profile.getMatch();
 
-		if (profile.getState() == ProfileState.FIGHTING) {
-			Match match = profile.getMatch();
-
-			if (match.getState() == MatchState.STARTING_ROUND || match.getState() == MatchState.PLAYING_ROUND) {
-				profile.getMatch().onDisconnect(event.getPlayer());
+		if (match == null) {
+			for (Match activeMatch : Match.getMatches()) {
+				if (activeMatch.getGamePlayer(player) != null ||
+						activeMatch.getSpectators().contains(player.getUniqueId())) {
+					match = activeMatch;
+					break;
+				}
 			}
+		}
+
+		if (match != null) {
+			match.onDisconnect(player);
 		}
 	}
 

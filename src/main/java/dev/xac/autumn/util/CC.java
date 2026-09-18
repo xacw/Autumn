@@ -18,6 +18,7 @@ public class CC {
     public static String LUNAR = StringEscapeUtils.unescapeJava("\u272A");
     public static String LINE = StringEscapeUtils.unescapeJava("\u2503");
 
+
     public static final String BLUE = ChatColor.BLUE.toString();
     public static final String AQUA = ChatColor.DARK_PURPLE.toString();
     public static final String YELLOW = ChatColor.YELLOW.toString();

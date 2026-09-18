@@ -153,6 +153,10 @@ public class ProfileListener implements Listener {
 
 		Profile profile = Profile.getProfiles().remove(event.getPlayer().getUniqueId());
 
+		if (profile == null) {
+			return;
+		}
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
