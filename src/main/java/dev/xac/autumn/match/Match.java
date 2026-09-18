@@ -206,6 +206,18 @@ public abstract class Match {
 		// Reset each game participant
 		for (GameParticipant<MatchGamePlayer> gameParticipant : getParticipants()) {
 			gameParticipant.reset();
+
+			if (kit.getGameRules().isSumo()) {
+				for (MatchGamePlayer gamePlayer : gameParticipant.getPlayers()) {
+					if (!gamePlayer.isDisconnected()) {
+						Player player = gamePlayer.getPlayer();
+
+						if (player != null) {
+							PlayerUtil.allowMovement(player);
+						}
+					}
+				}
+			}
 		}
 
 		// Set time data

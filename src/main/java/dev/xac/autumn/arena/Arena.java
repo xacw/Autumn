@@ -153,7 +153,15 @@ public class Arena extends Cuboid {
 				continue;
 			}
 
-			if (!arena.getKits().contains(kit.getName())) {
+			boolean supportsKit = false;
+			for (String kitName : arena.getKits()) {
+				if (kitName != null && kitName.trim().equalsIgnoreCase(kit.getName().trim())) {
+					supportsKit = true;
+					break;
+				}
+			}
+
+			if (!supportsKit) {
 				continue;
 			}
 

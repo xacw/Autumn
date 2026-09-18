@@ -109,6 +109,7 @@ public class ArenaGenerator {
 					arena = new StandaloneArena(name, minCorner, maxCorner);
 				} else if (this.type == ArenaType.DUPLICATE) {
 					arena = new Arena(name, minCorner, maxCorner);
+					arena.setKits(parentArena.getKits());
 					parentArena.getDuplicates().add(arena);
 				} else {
 					arena = new SharedArena(name, minCorner, maxCorner);

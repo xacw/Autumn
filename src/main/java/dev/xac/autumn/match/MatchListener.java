@@ -383,54 +383,49 @@ public class MatchListener implements Listener {
 			return;
 		}
 
-		if (attacker != null && event.getEntity() instanceof Player) {
-			Player damaged = (Player) event.getEntity();
-			Profile damagedProfile = Profile.getByUuid(damaged.getUniqueId());
-			Profile attackerProfile = Profile.getByUuid(attacker.getUniqueId());
+		if (!(event.getEntity() instanceof Player)) {
+			return;
+		}
 
-			if (attackerProfile.getState() == ProfileState.SPECTATING || damagedProfile.getState() == ProfileState.SPECTATING) {
-				event.setCancelled(true);
-				return;
-			}
+		Player damaged = (Player) event.getEntity();
+		Profile damagedProfile = Profile.getByUuid(damaged.getUniqueId());
+		Profile attackerProfile = Profile.getByUuid(attacker.getUniqueId());
 
-			if (damagedProfile.getState() == ProfileState.FIGHTING && attackerProfile.getState() == ProfileState.FIGHTING) {
-				Match match = attackerProfile.getMatch();
+		// Event PvP is validated by EventGameListener.
+		if (attackerProfile.getState() == ProfileState.EVENT &&
+				damagedProfile.getState() == ProfileState.EVENT) {
+			return;
+		}
 
-				if (!damagedProfile.getMatch().getMatchId().equals(attackerProfile.getMatch().getMatchId())) {
-					event.setCancelled(true);
-					return;
-				}
+		if (attackerProfile.getState() != ProfileState.FIGHTING ||
+				damagedProfile.getState() != ProfileState.FIGHTING) {
+			event.setCancelled(true);
+			return;
+		}
 
-				if (match.getGamePlayer(damaged).isDead()) {
-					event.setCancelled(true);
-					return;
-				}
+		Match match = attackerProfile.getMatch();
+		if (match == null || damagedProfile.getMatch() != match ||
+				match.getState() != MatchState.PLAYING_ROUND ||
+				match.getGamePlayer(attacker) == null || match.getGamePlayer(damaged) == null ||
+				match.getGamePlayer(attacker).isDead() || match.getGamePlayer(damaged).isDead() ||
+				match.isOnSameTeam(damaged, attacker)) {
+			event.setCancelled(true);
+			return;
+		}
 
-				if (match.getGamePlayer(attacker).isDead()) {
-					event.setCancelled(true);
-					return;
-				}
+		match.getGamePlayer(attacker).handleHit();
+		match.getGamePlayer(damaged).resetCombo();
 
-				if (match.isOnSameTeam(damaged, attacker)) {
-					event.setCancelled(true);
-					return;
-				}
+		if (event.getDamager() instanceof Arrow) {
+			int range = (int) Math.ceil(event.getEntity().getLocation().distance(attacker.getLocation()));
+			double health = Math.ceil(damaged.getHealth() - event.getFinalDamage()) / 2.0D;
 
-				attackerProfile.getMatch().getGamePlayer(attacker).handleHit();
-				damagedProfile.getMatch().getGamePlayer(damaged).resetCombo();
-
-				if (event.getDamager() instanceof Arrow) {
-					int range = (int) Math.ceil(event.getEntity().getLocation().distance(attacker.getLocation()));
-					double health = Math.ceil(damaged.getHealth() - event.getFinalDamage()) / 2.0D;
-
-					attacker.sendMessage(Locale.ARROW_DAMAGE_INDICATOR.format(
-							range,
-							damaged.getName(),
-							health,
-							StringEscapeUtils.unescapeJava("\u2764")
-					));
-				}
-			}
+			attacker.sendMessage(Locale.ARROW_DAMAGE_INDICATOR.format(
+					range,
+					damaged.getName(),
+					health,
+					StringEscapeUtils.unescapeJava("\u2764")
+			));
 		}
 	}
 

@@ -91,7 +91,12 @@ public class Kit {
 				kit.getKitLoadout().setContents(InventoryUtil.deserializeInventory(config.getString(path + ".loadout.contents")));
 			}
 
-			kit.getGameRules().setBuild(config.getBoolean(path + ".game-rules.allow-build"));
+			String allowBuildPath = path + ".game-rules.allow-build";
+			if (config.contains(allowBuildPath)) {
+				kit.getGameRules().setBuild(config.getBoolean(allowBuildPath));
+			} else {
+				kit.getGameRules().setBuild(config.getBoolean(path + ".game-rules.build"));
+			}
 			kit.getGameRules().setSpleef(config.getBoolean(path + ".game-rules.spleef"));
 			kit.getGameRules().setParkour(config.getBoolean(path + ".game-rules.parkour"));
 			kit.getGameRules().setSumo(config.getBoolean(path + ".game-rules.sumo"));
